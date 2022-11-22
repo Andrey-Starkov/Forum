@@ -20,7 +20,17 @@ app.use(cors(corsOptions))
 
 
 
-const filePath = "users.json";
+app.get("/api/topics", function(req, res){
+    const db = new sqlite3.Database('db.sqlite3');
+    db.serialize(() => {
+        db.all("SELECT * FROM topics", (err, row) => {
+            let topics = JSON.parse(JSON.stringify(row))
+            res.send(topics)
+        });
+    });
+    db.close();
+});
+
 app.get("/api/users", function(req, res){
     const db = new sqlite3.Database('db.sqlite3');
     db.serialize(() => {
@@ -31,7 +41,7 @@ app.get("/api/users", function(req, res){
     });
     db.close();
 });
-// получение одного пользователя по id
+
 app.get("/api/users/:id", function(req, res){
     const db = new sqlite3.Database('db.sqlite3');
     db.serialize(() => {
@@ -43,12 +53,12 @@ app.get("/api/users/:id", function(req, res){
     });
     db.close();
 });
-// // получение отправленных данных
+
+
 app.post("/api/users", jsonParser, function (req, res) {
-//
+
+
     if(!req.body) return res.sendStatus(400);
-//
-    console.log("проверка")
 
     const db = new sqlite3.Database('db.sqlite3');
 

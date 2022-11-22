@@ -1,6 +1,24 @@
 import {FormEvent, useState} from "react";
 import styles from './Reg.module.css'
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+
+async function CreateUser(login: string, password: string) {
+
+
+    const response = await fetch("http://localhost:3000/api/users", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            login: login,
+            password: password
+        })
+    });
+    if (response.ok){
+        return true
+    }
+    //await response.json();
+    return false;
+}
 
 export default function Reg() {
     const [login, setLogin] = useState("");
@@ -9,7 +27,7 @@ export default function Reg() {
     const [repass, setRepass] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [repassError, setRepassError] = useState("");
-
+    const navigate = useNavigate();
     const isValid = (): boolean => {
         let result = true;
         setLoginError("");
@@ -43,6 +61,11 @@ export default function Reg() {
 
         return result;
     };
+    const handleReg = async () => {
+        if (await CreateUser(login, password)) {
+            navigate("/forum")
+        }
+    }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -51,10 +74,11 @@ export default function Reg() {
     };
 
     return <>
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Логин:
+        <form onSubmit={handleSubmit} className={styles.block}>
+            <div className={styles.login}>
+                <label className={styles.text}>Логин:
                     <input
+                        className={styles.input}
                         value={login}
                         onChange={e => setLogin(e.target.value)}/>
                 </label>
@@ -62,9 +86,10 @@ export default function Reg() {
                     {loginError}
                 </div>}
             </div>
-            <div>
-                <label>Пароль:
+            <div className={styles.password}>
+                <label className={styles.text}>Пароль:
                     <input
+                        className={styles.input}
                         type="password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}/>
@@ -73,9 +98,10 @@ export default function Reg() {
                     {passwordError}
                 </div>}
             </div>
-            <div>
-                <label>Повтор пароля:
+            <div className={styles.repeat_pass}>
+                <label className={styles.text}>Повтор пароля:
                     <input
+                        className={styles.input}
                         type="password"
                         value={repass}
                         onChange={e => setRepass(e.target.value)}/>
@@ -84,8 +110,11 @@ export default function Reg() {
                     {repassError}
                 </div>}
             </div>
-            <button type="submit">Войти</button>
+            <div>
+                <button className={styles.button} type="submit" onClick={handleReg}>Зарегистрироваться</button>
+            </div>
             <Link to={"/"}> Форум </Link>
+
         </form>
     </>;
 }

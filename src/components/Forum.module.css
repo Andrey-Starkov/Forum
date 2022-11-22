@@ -1,0 +1,24 @@
+.search_input{
+    width: 80%;
+    height: 20px;
+
+}
+
+.img{
+    height: 16px;
+    width: 16px;
+}
+
+.create{
+    margin-top: 5px;
+    margin-right: 67.5%;
+    font-size: 20px;
+    font-family: "Georgia",serif;
+}
+
+.search_button{
+    padding-bottom: 10px;
+    height: 26px;
+    width: 25px;
+    justify-content: center;
+}

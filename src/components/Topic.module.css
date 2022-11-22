@@ -1,0 +1,39 @@
+.message_content{
+    font-size: 14px;
+    height: 50px;
+    width: 15%;
+    margin-left: 2%;
+}
+
+.topic_content{
+    font-size: 20px;
+    margin-left: 2%;
+    width: 16.3%;
+}
+
+.button{
+    font-size: 20px;
+    font-family: "Georgia",serif;
+    margin-left: 12.5%;
+    margin-top: 10px;
+}
+
+.cancel{
+    margin-right: 5px;
+}
+
+.topics{
+    padding-top: 15%;
+}
+
+.message{
+    font-size: 20px;
+    font-family: "Georgia",serif;
+}
+
+.topic{
+    font-size: 20px;
+    font-family: "Georgia",serif;
+    margin-left: 7.6%;
+    margin-bottom: 10px;
+}

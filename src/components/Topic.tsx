@@ -2,15 +2,17 @@ import React from 'react';
 import styles from './Topic.module.css'
 const Topic = () => {
     return (
-        <div>
+        <div className={styles.topics}>
             <h1>Создать тему</h1>
-            <div>
-                <label>Тема <input/></label>
+            <div className={styles.topic}>
+                <label>Тема <input className={styles.topic_content}/></label>
             </div>
-            <div>
-                <label>Первое сообщение <input className={styles.input}/></label>
+            <div className={styles.message}>
+                <label>Первое сообщение <input className={styles.message_content}/></label>
             </div>
-            <button>Отмена</button><button>Создать</button>
+            <div className={styles.button}>
+            <button className={styles.cancel}>Отмена</button><button>Создать</button>
+            </div>
         </div>
     );
 };

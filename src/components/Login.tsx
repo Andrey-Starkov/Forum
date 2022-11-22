@@ -1,5 +1,5 @@
 import {FormEvent, useState} from "react";
-import styles from './Reg.module.css'
+import styles from './Login.module.css'
 
 import {Link} from "react-router-dom";
 // @ts-ignore
@@ -14,14 +14,12 @@ async function Check(login: string, password: string) {
         if (login===datauser[i].login){
             //console.log("horosh")
             if (password === datauser[i].password){
-                console.log("horosh")
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                //const navigate = useNavigate();
-                //navigate("/forum",)
+                return true
             }
         }
     }
-    console.log(datauser[0])
+    return false
+    //console.log(datauser[0])
 }
 
 export default function Login() {
@@ -30,7 +28,8 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [repass, setRepass] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const [repassError, setRepassError] = useState("");
+    const navigate = useNavigate();
+
 
     const isValid = (): boolean => {
         let result = true;
@@ -53,15 +52,6 @@ export default function Login() {
             result = false;
         }
 
-        if (repass!==password){
-            setRepassError("Пароли не совподают");
-            result = false;
-        }
-
-        if (repass.length === 0 ){
-            setRepassError("Поле пустой");
-            result = false;
-        }
 
         // const button = document.querySelector("button")
 
@@ -74,6 +64,12 @@ export default function Login() {
         return result;
     };
 
+    const handleLogin = async () => {
+        if (await Check(login, password)) {
+            navigate("/forum")
+        }
+    }
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (isValid()) {
@@ -83,10 +79,11 @@ export default function Login() {
     // @ts-ignore
     // @ts-ignore
     return <>
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Логин:
+        <form onSubmit={handleSubmit} className={styles.block}>
+            <div className={styles.login}>
+                <label className={styles.text}>Логин:
                     <input
+                        className={styles.input}
                         value={login}
                         onChange={e => setLogin(e.target.value)}/>
                 </label>
@@ -94,9 +91,10 @@ export default function Login() {
                     {loginError}
                 </div>}
             </div>
-            <div>
-                <label>Пароль:
+            <div className={styles.password}>
+                <label className={styles.text}>Пароль:
                     <input
+                        className={styles.input}
                         type="password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}/>
@@ -106,17 +104,8 @@ export default function Login() {
                 </div>}
             </div>
             <div>
-                <label>Повтор пароля:
-                    <input
-                        type="password"
-                        value={repass}
-                        onChange={e => setRepass(e.target.value)}/>
-                </label>
-                {repassError && <div className={styles.error}>
-                    {repassError}
-                </div>}
+            <button className={styles.button} type="submit" onClick={handleLogin}>Войти</button>
             </div>
-            <button type="submit" onClick={e=> Check(login,password)}>Войти</button>
             <Link to={"/"}> Форум </Link>
 
         </form>
