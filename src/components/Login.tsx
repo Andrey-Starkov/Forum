@@ -1,32 +1,27 @@
 import {FormEvent, useState} from "react";
 import styles from './Login.module.css'
-
 import {Link} from "react-router-dom";
-// @ts-ignore
 import { useNavigate } from "react-router-dom"
-
-const URL = "http://localhost:3000/api/users"
 async function Check(login: string, password: string) {
-    const request = await fetch(`${URL}`,{ method: "GET", headers:{"Accept": "application/json"}});
-    const datauser = await request.json();
-    for (let i=0; i<datauser.length;i++){
-        //console.log(datauser[i].login)
-        if (login===datauser[i].login){
-            //console.log("horosh")
-            if (password === datauser[i].password){
-                return true
-            }
-        }
-    }
-    return false
-    //console.log(datauser[0])
+    const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            login: login,
+            password: password
+        })
+    });
+    const data = await response.json()
+    localStorage.clear()
+    localStorage.setItem(login,data)
+    if (response.ok)
+    return true
 }
 
 export default function Login() {
     const [login, setLogin] = useState("");
     const [loginError, setLoginError] = useState("");
     const [password, setPassword] = useState("");
-    const [repass, setRepass] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const navigate = useNavigate();
 
@@ -34,16 +29,10 @@ export default function Login() {
     const isValid = (): boolean => {
         let result = true;
         setLoginError("");
-        setPassword("");
-        setRepass("");
+        setPasswordError("");
 
         if (login.length === 0) {
             setLoginError("Логин не может быть пустым.");
-            result = false;
-        }
-
-        if (!/^([a-z0-9]{6,20})$/.test(login)) {
-            setLoginError("Логин должен содержать от 6 до 20 символов латинского алфавита и цифры.");
             result = false;
         }
 
@@ -53,18 +42,11 @@ export default function Login() {
         }
 
 
-        // const button = document.querySelector("button")
-
-        // button.addEventListener("click",()=>{
-        //     console.log("1")
-        // })
-
-
-
         return result;
     };
 
     const handleLogin = async () => {
+        if (isValid())
         if (await Check(login, password)) {
             navigate("/forum")
         }
@@ -76,8 +58,6 @@ export default function Login() {
         }
     };
 
-    // @ts-ignore
-    // @ts-ignore
     return <>
         <form onSubmit={handleSubmit} className={styles.block}>
             <div className={styles.login}>
@@ -106,7 +86,7 @@ export default function Login() {
             <div>
             <button className={styles.button} type="submit" onClick={handleLogin}>Войти</button>
             </div>
-            <Link to={"/"}> Форум </Link>
+            <Link to={"/register"}> Регистрация</Link>
 
         </form>
     </>;

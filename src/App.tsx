@@ -1,17 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './App.css';
 import {BrowserRouter as Router} from "react-router-dom";
-
-
 import {Route,Routes} from 'react-router-dom';
-import Data from "./components/Data";
 import Reg from "./components/Reg";
 import Login from "./components/Login";
-import Home from "./components/Home";
-import DataQuery from "./components/DataQuery";
 import Forum from "./components/Forum";
 import Topic from "./components/Topic";
-import TopicInfo from "./components/TopicInfo";
+import Messages from "./components/Messages";
 
 
 function App() {
@@ -21,14 +16,11 @@ function App() {
         <Router>
         <div className="App">
             <Routes>
-                <Route path={'/fetch'} element={<Data/>}/>
-                <Route path={'/profile'} element={<Reg/>}/>
-                <Route path={'/login'} element={<Login/>}/>
-                <Route path={'/'} element={<Home/>}/>
-                <Route path={'/query'} element={<DataQuery/>}/>
+                <Route path={'/register'} element={<Reg/>}/>
+                <Route path={'/'} element={<Login/>}/>
                 <Route path={'/forum'} element={<Forum/>}/>
                 <Route path={'/Topic'} element={<Topic/>}/>
-                <Route path={'/TopicInfo'} element={<TopicInfo/>}/>
+                <Route path={'/TopicMessage'} element={<Messages/>}/>
             </Routes>
         </div>
         </Router>

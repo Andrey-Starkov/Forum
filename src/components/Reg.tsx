@@ -3,9 +3,7 @@ import styles from './Reg.module.css'
 import {Link, useNavigate} from "react-router-dom";
 
 async function CreateUser(login: string, password: string) {
-
-
-    const response = await fetch("http://localhost:3000/api/users", {
+    const response = await fetch("http://localhost:5000/api/registration", {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -16,7 +14,6 @@ async function CreateUser(login: string, password: string) {
     if (response.ok){
         return true
     }
-    //await response.json();
     return false;
 }
 
@@ -31,8 +28,8 @@ export default function Reg() {
     const isValid = (): boolean => {
         let result = true;
         setLoginError("");
-        setPassword("");
-        setRepass("");
+        setPasswordError("");
+        setRepassError("");
 
         if (login.length === 0) {
             setLoginError("Логин не может быть пустым.");
@@ -50,20 +47,21 @@ export default function Reg() {
         }
 
         if (repass!==password){
-            setRepassError("Пароли не совподают");
+            setRepassError("Пароли не совпадают.");
             result = false;
         }
 
         if (repass.length === 0 ){
-            setRepassError("Поле пустой");
+            setRepassError("Поле не может быть пустым.");
             result = false;
         }
 
         return result;
     };
     const handleReg = async () => {
+        if (isValid())
         if (await CreateUser(login, password)) {
-            navigate("/forum")
+            navigate("/")
         }
     }
 
@@ -113,7 +111,7 @@ export default function Reg() {
             <div>
                 <button className={styles.button} type="submit" onClick={handleReg}>Зарегистрироваться</button>
             </div>
-            <Link to={"/"}> Форум </Link>
+            <Link to={"/"}> Вход в старый аккаунт</Link>
 
         </form>
     </>;
